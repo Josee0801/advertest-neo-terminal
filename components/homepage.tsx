@@ -49,7 +49,7 @@ const colors = {
   ink: "#070908",
   surface: "#101310",
   paper: "#f4f4ed",
-  acid: "#d8ff68",
+  acid: "##5B1D28",
   mint: "#73f7cf",
   coral: "#ff6b45",
   slate: "#a7afa5",
