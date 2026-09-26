@@ -253,7 +253,7 @@ export function Homepage() {
         <Drawer anchor="right" open={menuOpen} onClose={() => setMenuOpen(false)}>
           <Box className="h-full w-[86vw] max-w-sm bg-[#111411] p-5 text-white">
             <div className="flex items-center justify-between"><Brand /><IconButton aria-label="Đóng menu" onClick={() => setMenuOpen(false)} className="!bg-white/7 !text-white"><CloseRounded /></IconButton></div>
-            <List className="!mt-8">{navItems.map(([label, href]) => <ListItemButton component="a" href={href} key={href} onClick={() => setMenuOpen(false)} className="!mb-2 !rounded-2xl !bg-white/[0.045] !py-3"><ListItemText primary={label} primaryTypographyProps={{ fontWeight: 750 }} /><ChevronRightRounded className="!text-[#d8ff68]" /></ListItemButton>)}</List>
+            <List className="!mt-8">{navItems.map(([label, href]) => <ListItemButton component="a" href={href} key={href} onClick={() => setMenuOpen(false)} className="!mb-2 !rounded-2xl !bg-white/[0.045] !py-3"><ListItemText primary={<Typography className="!font-bold">{label}</Typography>} /><ChevronRightRounded className="!text-[#d8ff68]" /></ListItemButton>)}</List>
             <Button href="/console" fullWidth variant="contained" className="!mt-6 !bg-[#d8ff68] !text-[#070908]">Mở product console</Button>
           </Box>
         </Drawer>
