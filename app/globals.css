@@ -186,3 +186,145 @@ body { font-family: "Manrope Variable", sans-serif; }
     transition-duration: .01ms !important;
   }
 }
+
+/* Console foundations: readable density, role toolbar, and dual themes. */
+.app-shell {
+  --surface: #0f181f;
+  --surface-soft: #131f27;
+  --surface-raised: #17252d;
+  --field: #111c23;
+  --text-subtle: #93a1aa;
+  font-family: "Manrope Variable", sans-serif;
+  font-size: 14px;
+  color: var(--paper);
+  transition: background-color .28s ease, color .28s ease;
+}
+.app-shell *,
+.app-shell .MuiTypography-root,
+.app-shell .MuiButton-root,
+.app-shell .MuiInputBase-root,
+.app-shell .MuiFormControlLabel-label {
+  font-family: "Manrope Variable", sans-serif !important;
+}
+.app-shell[data-theme="light"] {
+  --ink: #edf1ef;
+  --ink-2: #f7f9f8;
+  --line: #d7dfdb;
+  --paper: #17201d;
+  --muted: #65716c;
+  --cyan: #087f91;
+  --orange: #e5542f;
+  --green: #168451;
+  --red: #ce3f4b;
+  --surface: #ffffff;
+  --surface-soft: #f2f6f4;
+  --surface-raised: #e8efeb;
+  --field: #edf2ef;
+  --text-subtle: #5d6b65;
+  background: radial-gradient(circle at 80% -20%, #d8ebe7 0, transparent 35%), var(--ink);
+}
+.app-shell[data-theme="light"] .sidebar { background: rgba(247,249,248,.94); }
+.app-shell[data-theme="light"] .topbar { background: rgba(237,241,239,.88); }
+.app-shell[data-theme="light"] :where(.panel,.form-panel,.estimate-card,.matrix-panel,.review-panel,.signoff-panel,.registry-table,.case-row,.metric-card,.resource-card,.failure-card,.run-table) { background: var(--surface); }
+.app-shell[data-theme="light"] :where(.nav-item:hover,.nav-item.is-active,.breaking-point,.matrix-head,.registry-row--head,.role-gate,.review-title>span) { background: var(--surface-raised); }
+.app-shell[data-theme="light"] :where(.search,.button--ghost,.user-card,.attack-chip,.verdicts button,.compare-toolbar>button) { background: var(--field); color: var(--paper); }
+.app-shell[data-theme="light"] .alert-strip { background: #dcefed; color: #356d70; }
+.app-shell[data-theme="light"] .attack-chip.is-selected { background: #d9eff0; color: #075d69; }
+.app-shell[data-theme="light"] .estimate-card { background: linear-gradient(155deg,#fff,#edf4f1); }
+.app-shell[data-theme="light"] .estimate-note { background: #e1f1e8; color: #276f4b; }
+.app-shell[data-theme="light"] .failure-banner { background: #f8e7e6; color: #9b3f45; }
+.app-shell[data-theme="light"] .report-banner { background: #f6e9dc; }
+.app-shell[data-theme="light"] .report-banner--validated { background: #e1f1e7; }
+.app-shell[data-theme="light"] .admin-warning { background: #f4ead8; color: #775e2d; }
+.app-shell[data-theme="light"] .MuiSlider-rail { color: #c1cbc6; }
+
+.app-shell :where(.panel,.form-panel,.estimate-card,.matrix-panel,.review-panel,.signoff-panel,.registry-table,.metric-card,.resource-card,.failure-card,.case-list,.user-card,.search,.attack-chip) {
+  border: 0 !important;
+  box-shadow: 0 12px 34px rgba(0,0,0,.09), inset 0 1px rgba(255,255,255,.035);
+}
+.app-shell :where(.button,.icon-button,.compare-toolbar>button,.verdicts button) { border: 0; }
+.app-shell :where(.panel,.metric-card,.form-panel,.estimate-card,.review-panel,.signoff-panel,.run-table,.registry-table) { border-radius: 12px; }
+.app-shell :where(.button,.search,.user-card,.attack-chip,.failure-card,.resource-card) { border-radius: 9px; }
+.app-shell :where(button,.button,input,select,textarea) { font-size: 13px; }
+.app-shell small { font-size: 11px !important; line-height: 1.45; }
+.app-shell h1 { font-size: clamp(26px,2.1vw,31px); font-weight: 700; }
+.app-shell .section-title h2 { font-size: 18px; font-weight: 700; }
+.app-shell .section-title p { font-size: 13px; }
+.app-shell :where(.nav-kicker,.eyebrow,.panel-head p,.section-index,.metric-card__head,.status,.estimate-card>p:first-child,.signoff-panel>p,.review-title p,.matrix-row--head,.registry-row--head) { font-size: 11px; }
+.app-shell :where(.nav-item,.button,.search input,.alert-strip,.form-panel label,.mui-field-label) { font-size: 13px; }
+.app-shell :where(.metric-card p,.breaking-point,.risk-list,.run-row,.monitor-hero p,.stage-list,.matrix-head span,.matrix-row>b,.failure-card b,.case-row b,.review-meta,.gate-check,.registry-row,.admin-warning) { font-size: 12px; }
+.app-shell :where(.panel-head h3,.review-title h3,.matrix-head h3) { font-size: 16px; }
+.app-shell .metric-card strong { font-size: 30px; }
+.app-shell .attack-chip b { font-size: 13px; }
+.app-shell .matrix-row button { font-size: 11px; min-height: 30px; }
+.app-shell .paper-report>p { font-size: 12px; }
+.app-shell .paper-report>h3 { font-size: 13px; }
+.app-shell .coverage span { font-size: 11px; }
+.app-shell .registry-row button { font-size: 12px; }
+
+.console-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 40px;
+  padding: 3px 5px 3px 9px;
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--muted);
+}
+.theme-icon { display: inline-flex; color: var(--muted); }
+.app-shell .MuiFilledInput-root {
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--field);
+  color: var(--paper);
+}
+.app-shell .MuiFilledInput-root::before,
+.app-shell .MuiFilledInput-root::after { display: none; }
+.app-shell .MuiFilledInput-root:hover { background: color-mix(in srgb,var(--field) 88%,var(--cyan)); }
+.app-shell .MuiSelect-icon { color: var(--muted); }
+.app-shell .MuiSlider-root { color: var(--cyan); padding-block: 12px; }
+.app-shell .MuiSwitch-switchBase.Mui-checked { color: var(--cyan); }
+.app-shell .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track { background-color: var(--cyan); }
+.mui-field-label { display: grid; gap: 8px; color: var(--text-subtle); font-weight: 800; letter-spacing: .06em; }
+.mui-switch-row { width: 100%; margin: 0 !important; align-items: flex-start !important; }
+.mui-switch-row .MuiSwitch-root { margin-right: 8px; }
+.mui-switch-row b,
+.mui-switch-row small { display: block; }
+.mui-switch-row b { color: var(--paper); font-size: 13px; }
+.mui-switch-row small { margin-top: 3px; color: var(--muted); }
+.builder-run-button {
+  min-height: 44px;
+  border-radius: 9px !important;
+  background: var(--orange) !important;
+  color: #190d08 !important;
+  font-weight: 800 !important;
+  box-shadow: 0 12px 28px color-mix(in srgb,var(--orange) 22%,transparent) !important;
+}
+.builder-run-button:disabled { opacity: .45; }
+.attack-chip {
+  transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.attack-chip:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(0,0,0,.15); }
+.attack-chip:focus-visible { outline: 3px solid color-mix(in srgb,var(--cyan) 40%,transparent); outline-offset: 2px; }
+.attack-chip i { border: 0; background: color-mix(in srgb,var(--paper) 8%,transparent); border-radius: 5px; }
+.attack-chip.is-selected { box-shadow: inset 3px 0 var(--cyan), 0 12px 28px rgba(0,0,0,.1); }
+
+@media(max-width:1380px) {
+  .topbar { align-items: flex-start; }
+  .top-actions { flex-wrap: wrap; justify-content: flex-end; }
+  .top-actions .search { order: 4; }
+}
+@media(max-width:1050px) {
+  .top-actions .search { display: none; }
+}
+@media(max-width:720px) {
+  .topbar { position: sticky; top: 0; flex-direction: column; align-items: stretch; gap: 12px; }
+  .top-actions { width: 100%; justify-content: flex-start; }
+  .console-toolbar { width: 100%; margin-left: 0; justify-content: flex-start; }
+  .console-toolbar > svg:last-of-type,
+  .console-toolbar .role-select { display: none; }
+  .app-shell .topbar h1 { font-size: 23px; }
+  .app-shell .section-title h2 { font-size: 17px; }
+  .app-shell .metric-card strong { font-size: 26px; }
+}
