@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+/.venv-ml/
+/ml-core/src/*.egg-info/
+/ml-core/**/__pycache__/
 /.pnp
 .pnp.*
 .yarn/*
