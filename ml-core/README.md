@@ -5,11 +5,11 @@ Standalone Python package for real YOLO inference and a first KITTI robustness-e
 ## MVP scope
 
 - Ultralytics YOLO image inference with CPU as the default device.
-- KITTI Object Detection `training/image_2` and `training/label_2` reader, currently evaluating Car, Pedestrian, and Cyclist labels.
+- KITTI Object Detection reader for both original `training/image_2` + `training/label_2` and Ultralytics `images/{train,val}` + `labels/{train,val}` layouts, currently evaluating Car, Pedestrian, and Cyclist labels.
 - Reproducible fog, snow, Gaussian-noise, and blur corruptions at severity 1-5.
 - Clean and attacked mAP@IoU 0.50, retention, and missed-object failure cases in JSON.
 
-The pretrained `yolov8n.pt` weights use COCO classes. The adapter maps COCO `person` to KITTI `Pedestrian`; it deliberately does not map `bicycle` to `Cyclist`, because those labels are not equivalent. This is a practical MVP mapping, not a KITTI-trained benchmark. For research-quality KITTI scores, fine-tune or select a KITTI-compatible detector and document the class mapping. These corruption transforms are weather/image corruptions, not gradient-based adversarial attacks such as FGSM or PGD.
+The Ultralytics KITTI label IDs use this order: Car, Van, Truck, Pedestrian, Person_sitting, Cyclist, Tram, Misc. The loader currently evaluates Car, Pedestrian, and Cyclist. The pretrained `yolov8n.pt` weights use COCO classes. The adapter maps COCO `person` to KITTI `Pedestrian`; it deliberately does not map `bicycle` to `Cyclist`, because those labels are not equivalent. This is a practical MVP mapping, not a KITTI-trained benchmark. For research-quality KITTI scores, fine-tune or select a KITTI-compatible detector and document the class mapping. These corruption transforms are weather/image corruptions, not gradient-based adversarial attacks such as FGSM or PGD.
 
 ## Install on Windows PowerShell
 
@@ -32,10 +32,10 @@ advertest-ml infer --image .\path\to\image.png --weights yolov8n.pt --device cpu
 
 ## Evaluate a labeled KITTI subset
 
-Extract KITTI Object Detection so the root contains `training/image_2` and `training/label_2`, then run:
+Extract KITTI Object Detection so the root contains `training/image_2` and `training/label_2`, or use the Ultralytics export with `images/train`, `images/val`, `labels/train`, and `labels/val`. For the Ultralytics layout extracted at `D:\build phase`, run:
 
 ```powershell
-advertest-ml evaluate-kitti --dataset-root D:\datasets\KITTI --split training --limit 100 --weights yolov8n.pt --corruption snow --severity 3 --seed 42 --output .\outputs\kitti-snow-s3.json
+advertest-ml evaluate-kitti --dataset-root "D:\build phase" --split train --limit 100 --weights yolov8n.pt --corruption snow --severity 3 --seed 42 --output .\outputs\kitti-snow-s3.json
 ```
 
 The command runs clean and corrupted inference on the same subset. KITTI test images do not provide public labels, so use the labeled training set (or a properly held-out labeled subset) for metrics. Do not use the same images for tuning and final evaluation.

@@ -4,14 +4,20 @@ from pathlib import Path
 
 from PIL import Image
 
+from advertest_ml_core.adapters.yolo import KITTI_CLASS_ALIASES
 from advertest_ml_core.attacks.corruption import apply_corruption
-from advertest_ml_core.datasets.kitti import load_kitti, parse_kitti_labels
+from advertest_ml_core.datasets.kitti import load_kitti, parse_kitti_labels, parse_yolo_kitti_labels
 from advertest_ml_core.metrics.detection import evaluate_map50, find_failures, intersection_over_union
 from advertest_ml_core.pipeline import evaluate_kitti
 from advertest_ml_core.types import Detection, GroundTruth, KittiSample
 
 
 class KittiReaderTests(unittest.TestCase):
+    def test_yolo_class_names_normalize_to_kitti_labels(self) -> None:
+        self.assertEqual(KITTI_CLASS_ALIASES["car"], "Car")
+        self.assertEqual(KITTI_CLASS_ALIASES["pedestrian"], "Pedestrian")
+        self.assertEqual(KITTI_CLASS_ALIASES["cyclist"], "Cyclist")
+
     def test_parses_supported_kitti_objects_and_ignores_other_classes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "000000.txt"
@@ -35,6 +41,29 @@ class KittiReaderTests(unittest.TestCase):
             sample = next(load_kitti(root, limit=1))
         self.assertEqual(sample.image_id, "000001")
         self.assertEqual(sample.ground_truth[0].class_name, "Pedestrian")
+
+    def test_loads_ultralytics_kitti_yolo_layout_and_converts_boxes(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "images/train").mkdir(parents=True)
+            (root / "labels/train").mkdir(parents=True)
+            Image.new("RGB", (20, 10)).save(root / "images/train/000001.png")
+            (root / "labels/train/000001.txt").write_text(
+                "0 0.5 0.5 0.5 0.5\n5 0.25 0.5 0.2 0.4\n1 0.5 0.5 0.2 0.2\n",
+                encoding="utf-8",
+            )
+            sample = next(load_kitti(root, split="training", limit=1))
+        self.assertEqual(sample.image_id, "000001")
+        self.assertEqual([item.class_name for item in sample.ground_truth], ["Car", "Cyclist"])
+        self.assertEqual(sample.ground_truth[0].box, (5.0, 2.5, 15.0, 7.5))
+        self.assertEqual(sample.ground_truth[1].box, (3.0, 3.0, 7.0, 7.0))
+
+    def test_yolo_label_parser_rejects_unknown_class_id(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "sample.txt"
+            path.write_text("8 0.5 0.5 0.2 0.2\n", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "unknown KITTI class id"):
+                parse_yolo_kitti_labels(path, (20, 10))
 
 
 class DetectionMetricTests(unittest.TestCase):

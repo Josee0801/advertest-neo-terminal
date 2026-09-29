@@ -7,8 +7,14 @@ from advertest_ml_core.types import Detection
 
 KITTI_CLASS_ALIASES = {
     "car": "Car",
-    "person": "Pedestrian",
+    "van": "Van",
     "truck": "Truck",
+    "person": "Pedestrian",
+    "pedestrian": "Pedestrian",
+    "person_sitting": "Person_sitting",
+    "cyclist": "Cyclist",
+    "tram": "Tram",
+    "misc": "Misc",
     "bus": "Bus",
 }
 
