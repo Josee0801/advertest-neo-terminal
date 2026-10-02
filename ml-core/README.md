@@ -5,11 +5,11 @@ Standalone Python package for real YOLO inference and a first KITTI robustness-e
 ## MVP scope
 
 - Ultralytics YOLO image inference with CPU as the default device.
-- KITTI Object Detection reader for both original `training/image_2` + `training/label_2` and Ultralytics `images/{train,val}` + `labels/{train,val}` layouts, currently evaluating Car, Pedestrian, and Cyclist labels.
+- KITTI Object Detection reader for both original `training/image_2` + `training/label_2` and Ultralytics `images/{train,val}` + `labels/{train,val}` layouts, evaluating all 8 KITTI classes.
 - Reproducible fog, snow, Gaussian-noise, and blur corruptions at severity 1-5.
 - Clean and attacked mAP@IoU 0.50, retention, and missed-object failure cases in JSON.
 
-The Ultralytics KITTI label IDs use this order: Car, Van, Truck, Pedestrian, Person_sitting, Cyclist, Tram, Misc. The loader currently evaluates Car, Pedestrian, and Cyclist. The pretrained `yolov8n.pt` weights use COCO classes. The adapter maps COCO `person` to KITTI `Pedestrian`; it deliberately does not map `bicycle` to `Cyclist`, because those labels are not equivalent. This is a practical MVP mapping, not a KITTI-trained benchmark. For research-quality KITTI scores, fine-tune or select a KITTI-compatible detector and document the class mapping. These corruption transforms are weather/image corruptions, not gradient-based adversarial attacks such as FGSM or PGD.
+The Ultralytics KITTI label IDs use this order: Car, Van, Truck, Pedestrian, Person_sitting, Cyclist, Tram, Misc. The evaluator includes all 8 classes. The pretrained `yolov8n.pt` weights use COCO classes. The adapter maps COCO `person` to KITTI `Pedestrian`; it deliberately does not map `bicycle` to `Cyclist`, because those labels are not equivalent. Use the committed KITTI-fine-tuned checkpoint for evaluation across all 8 classes. These corruption transforms are weather/image corruptions, not gradient-based adversarial attacks such as FGSM or PGD.
 
 ## Install on Windows PowerShell
 

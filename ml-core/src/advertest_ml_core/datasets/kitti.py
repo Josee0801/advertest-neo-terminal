@@ -6,7 +6,16 @@ from PIL import Image
 
 from advertest_ml_core.types import GroundTruth, KittiSample
 
-SUPPORTED_CLASSES = frozenset({"Car", "Pedestrian", "Cyclist"})
+SUPPORTED_CLASSES = frozenset({
+    "Car",
+    "Van",
+    "Truck",
+    "Pedestrian",
+    "Person_sitting",
+    "Cyclist",
+    "Tram",
+    "Misc",
+})
 YOLO_KITTI_CLASS_NAMES = (
     "Car",
     "Van",

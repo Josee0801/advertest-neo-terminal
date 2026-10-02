@@ -54,9 +54,22 @@ class KittiReaderTests(unittest.TestCase):
             )
             sample = next(load_kitti(root, split="training", limit=1))
         self.assertEqual(sample.image_id, "000001")
-        self.assertEqual([item.class_name for item in sample.ground_truth], ["Car", "Cyclist"])
+        self.assertEqual([item.class_name for item in sample.ground_truth], ["Car", "Cyclist", "Van"])
         self.assertEqual(sample.ground_truth[0].box, (5.0, 2.5, 15.0, 7.5))
         self.assertEqual(sample.ground_truth[1].box, (3.0, 3.0, 7.0, 7.0))
+
+    def test_yolo_kitti_parser_keeps_all_eight_classes(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "all-classes.txt"
+            path.write_text(
+                "".join(f"{class_id} 0.5 0.5 0.2 0.2\n" for class_id in range(8)),
+                encoding="utf-8",
+            )
+            labels = parse_yolo_kitti_labels(path, (100, 100))
+        self.assertEqual(
+            [label.class_name for label in labels],
+            ["Car", "Van", "Truck", "Pedestrian", "Person_sitting", "Cyclist", "Tram", "Misc"],
+        )
 
     def test_yolo_label_parser_rejects_unknown_class_id(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
